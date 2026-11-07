@@ -10,13 +10,26 @@ narrator, speed and pronunciation before committing to a full run.
 ## Install
 
 ```bash
-brew install ffmpeg      # if not installed
+brew install uv ffmpeg      # if not installed
 uv sync
 ```
 
-First run downloads the default model
-`mlx-community/Qwen3-TTS-12Hz-0.6B-CustomVoice-8bit` (~3 GB). Qwen3-TTS is
-loaded through MLX Audio; no separate `qwen-tts` package is needed.
+`uv` reads `.python-version` (3.12) and `uv.lock`. It creates `.venv` and
+installs the app plus MLX Audio. Qwen3-TTS is loaded through MLX Audio; no
+separate `qwen-tts` package is needed.
+
+Models are downloaded from Hugging Face on first use and cached once in
+`~/.cache/huggingface/hub`. Pre-download to avoid waiting later:
+
+```bash
+# Default CustomVoice model (~3 GB)
+uv run hf download mlx-community/Qwen3-TTS-12Hz-0.6B-CustomVoice-8bit
+
+# Base model for voice cloning (~4.5 GB)
+uv run hf download mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16
+```
+
+Each `--model` caches separately. Use `uv run hf cache ls` to inspect the cache.
 
 ## Quick start
 
@@ -76,6 +89,14 @@ uv run qwen-book book.epub --dry-run
 # Real estimate: synthesize ~700 chars, measure speed, extrapolate selected range
 uv run qwen-book book.epub --dry-run --calibrate
 
+# Calibrated estimate for a Russian cloned narrator
+uv run qwen-book book.epub \
+  --language russian \
+  --ref-audio narrator.wav \
+  --ref-text narrator.json \
+  --model mlx-community/Qwen3-TTS-12Hz-1.7B-Base-bf16 \
+  --dry-run --calibrate --calibrate-chars 700
+
 # Longer chunks / less frequent pauses
 uv run qwen-book book.epub --chunk-chars 350 --pause-ms 300
 ```
@@ -127,3 +148,10 @@ chars/sec, RTF, warmup, and a calibrated estimate for the selected range.
   before a long run.
 - The converter is single-voice. Role-based multi-speaker narration is not
   included.
+
+## Development
+
+```bash
+uv sync --all-groups
+uv run pytest -q
+```

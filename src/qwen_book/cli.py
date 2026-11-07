@@ -100,7 +100,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     other = parser.add_argument_group("other")
-    other.add_argument("--work-dir", type=Path, help="cache/work directory (default: next to output)")
+    other.add_argument(
+        "--work-dir",
+        type=Path,
+        help="cache/work directory (default: next to the EPUB)",
+    )
     other.add_argument("--force", action="store_true", help="overwrite an existing M4B")
     other.add_argument(
         "--dry-run",

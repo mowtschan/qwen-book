@@ -1,0 +1,16 @@
+{
+  "0": "cli.py",
+  "1": "epub.py",
+  "2": "pipeline.py",
+  "3": "text.py",
+  "4": "m4b.py",
+  "5": "main",
+  "6": "qwen-book",
+  "7": "sample_epub",
+  "8": "__init__.py",
+  "9": "qwen-book",
+  "10": "compute_calibration",
+  "11": "load_ref_text",
+  "12": "TTSEngine",
+  "13": "model_voices"
+}

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qwen-book"
+version = "0.1.0"
+description = "Convert EPUB books to chaptered M4B audiobooks with Qwen3-TTS and MLX Audio"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "mlx-audio>=0.6.4",
+    "ebooklib>=0.19",
+    "beautifulsoup4>=4.12",
+    "numpy>=1.26",
+]
+
+[project.scripts]
+qwen-book = "qwen_book.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
